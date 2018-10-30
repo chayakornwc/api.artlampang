@@ -2,13 +2,26 @@ import { getService, juggler } from '@loopback/service-proxy';
 import { inject, Provider } from '@loopback/core';
 import { DatabaseDataSource } from '../datasources';
 
-export interface PostsAll {
+export interface Posts {
   results: {
     PostResult: string
   }
 }
+export interface Post {
+  results: {
+    PostResult: string
+  }
+}
+export interface sluckParams {
+  sluck: string;
+}
+
+//
+// # VERB LISTENINING
+//
 export interface PostService {
-  PostsAll(args: PostsAll): Promise<PostResult>;
+  findAll(): Promise<Posts>;
+  findById(arg: sluckParams): Promise<Post>;
 }
 export class PostServiceProvider implements Provider<PostService> {
   constructor(@inject("datasources.database")

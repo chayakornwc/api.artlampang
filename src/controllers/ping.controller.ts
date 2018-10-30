@@ -48,4 +48,13 @@ export class PingController {
       headers: Object.assign({}, this.req.headers),
     };
   }
+
+  @get('/noping', { responses: { '200': PING_RESPONSE }, })
+  opt(): object {
+    return {
+      nogreet: '',
+      date: new Date(),
+
+    }
+  }
 }
