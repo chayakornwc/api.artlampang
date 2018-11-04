@@ -1,6 +1,6 @@
-import { Entity, model, property } from '@loopback/repository';
+import { Entity, model, property, hasMany } from '@loopback/repository';
 import { NamespacedReflect } from '@loopback/core';
-
+import { postcategories } from './postcategories.model'
 @model()
 
 export class posts extends Entity {
@@ -57,6 +57,8 @@ export class posts extends Entity {
     required: true,
   })
   publishedDate: string;
+
+
 
   constructor(data?: Partial<posts>) {
     super(data);

@@ -1,5 +1,5 @@
-import { Entity, model, property } from '@loopback/repository';
-
+import { Entity, model, property, hasMany } from '@loopback/repository';
+import { posts } from './posts.model'
 @model()
 export class postcategories extends Entity {
   @property({
@@ -26,6 +26,9 @@ export class postcategories extends Entity {
     required: true,
   })
   _v: number;
+
+  @hasMany(() => posts, { keyTo: 'categories' })
+  posts?: posts[];
 
   constructor(data?: Partial<postcategories>) {
     super(data);

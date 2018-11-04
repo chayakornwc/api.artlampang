@@ -28,7 +28,7 @@ export class PostController {
   @get('/api/posts', {
     responses: {
       '200': {
-        description: 'Array of Posts model instances',
+        description: 'Array of Posts model',
         content: {
           'application/json': {
             schema: { type: 'array', items: { 'x-ts-type': posts } },
