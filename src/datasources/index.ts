@@ -6,4 +6,5 @@ export class DbDataSource extends juggler.DataSource {
     super(dsConfig);
   }
 }
-export * from './database.datasource';
+export * from './mongo.datasource';
+
