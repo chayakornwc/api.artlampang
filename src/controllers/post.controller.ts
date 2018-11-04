@@ -1,28 +1,59 @@
-
-import { inject } from '@loopback/core';
-import { get, param, HttpErrors } from '@loopback/rest';
 import {
-  PostService,
-  Posts,
-  Post,
-  sluckParams
-} from '../services/post.service';
+  Count,
+  CountSchema,
+  Filter,
+  repository,
+  Where,
+} from '@loopback/repository';
+import {
+  post,
+  param,
+  get,
+  getFilterSchemaFor,
+  getWhereSchemaFor,
+  patch,
+  del,
+  requestBody,
+} from '@loopback/rest';
+import { posts } from '../models';
+import { PostsRepository } from '../repositories';
+
 export class PostController {
   constructor(
-    @inject("services.PostService")
-    protected PostService: PostService
+    @repository(PostsRepository)
+    public postsRepository: PostsRepository,
   ) { }
-  @get('/api/post/{post_sluck}')
-  async _findById(@param.path.string('post_sluck') sluck: string): Promise<Post> {
-    //Preconditions
-    if (sluck) {
-      throw new HttpErrors.PreconditionFailed('Cannot divide by zero');
-    }
-    return await this.PostService.findById(<sluckParams>{
-      sluck
-    });
+
+
+  @get('/api/posts', {
+    responses: {
+      '200': {
+        description: 'Array of Posts model instances',
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: { 'x-ts-type': posts } },
+          },
+        },
+      },
+    },
+  })
+  async find(
+    @param.query.object('filter', getFilterSchemaFor(posts)) filter?: Filter,
+  ): Promise<posts[]> {
+    return await this.postsRepository.find(filter);
   }
-  async _findAll(): Promise<Posts> {
-    return await this.PostService.findAll()
+
+
+  @get('/api/post/{id}', {
+    responses: {
+      '200': {
+        description: 'Posts model instance',
+        content: { 'application/json': { 'x-ts-type': posts } },
+      },
+    },
+  })
+  async findById(@param.path.string('id') id: string): Promise<posts> {
+    return await this.postsRepository.findById(id);
   }
+
 }

@@ -1,6 +1,6 @@
 import { getService, juggler } from '@loopback/service-proxy';
 import { inject, Provider } from '@loopback/core';
-import { DatabaseDataSource } from '../datasources';
+import { MongoDataSource } from '../datasources';
 
 export interface Posts {
   results: {
@@ -25,7 +25,7 @@ export interface PostService {
 }
 export class PostServiceProvider implements Provider<PostService> {
   constructor(@inject("datasources.database")
-  protected dataSource: juggler.DataSource = new DatabaseDataSource()) {
+  protected dataSource: juggler.DataSource = new MongoDataSource()) {
   }
   value(): Promise<PostService> {
     return getService(this.dataSource);
