@@ -27,8 +27,16 @@ export class postcategories extends Entity {
   })
   _v: number;
 
+
+  /**
+   * Items in the categoires
+   */
+  @property.array(posts)
+  postsitem?: posts[];
+
+
   @hasMany(() => posts, { keyTo: 'categories' })
-  posts?: posts[];
+  posts: posts[];
 
   constructor(data?: Partial<postcategories>) {
     super(data);

@@ -13,9 +13,8 @@ export class posts extends Entity {
 
   @property({
     type: 'string',
-    required: true,
   })
-  slug: string;
+  slug?: string;
 
   @property({
     type: 'string',
@@ -25,10 +24,9 @@ export class posts extends Entity {
 
   @property({
     type: 'array',
-    itemType: 'object',
-    required: true,
+    itemType: 'string',
   })
-  categories: object[];
+  categories?: object[];
 
   @property({
     type: 'string',

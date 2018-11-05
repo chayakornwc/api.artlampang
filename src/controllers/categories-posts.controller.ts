@@ -1,5 +1,5 @@
 import { PostcategoriesRepository, PostsRepository } from '../repositories/';
-import { postcategories, posts } from '../models/';
+import { posts } from '../models/';
 import {
   Count,
   CountSchema,
@@ -23,18 +23,23 @@ export class CategoriesPostsController {
   constructor(
     @repository(PostcategoriesRepository)
     protected PostcategoriesRepository: PostcategoriesRepository,
-  ) { }
+  ) {
+    /**
+   * Create or update the orders for a given user
+   * @param categories categories id
+   */
+  }
 
-  @post('/api/categories/{id}/posts')
-  async createposts(
-    @param.path.string('id') categories: typeof postcategories.prototype._id,
-    @requestBody() postData: posts,
-  ): Promise<posts> {
-    return await this.PostcategoriesRepository.posts(categories).create(postData);
+  @get('/api/categories/{id}/posts')
+  async findPosts(
+    @param.path.string('id') categories: string,
+    @param.query.string('filter') filter?: Filter,
+  ): Promise<posts[]> {
+    const posts = await this.PostcategoriesRepository
+      .posts(categories)
+      .find(filter, { strictObjectIDCoercion: true })
+    console.log(categories)
+    return posts
   }
-  @get('/api/categories/{categories}/posts')
-  async postsCategories(@param.path.string('categories') categories: typeof postcategories.prototype._id,
-    @param.query.object('filter', getFilterSchemaFor(posts)) filter: Filter): Promise<posts[]> {
-    return await this.PostcategoriesRepository.posts(categories).find()
-  }
+
 }
