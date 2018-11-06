@@ -11,6 +11,7 @@ import {
   post,
   param,
   get,
+  HttpErrors,
   getFilterSchemaFor,
   getWhereSchemaFor,
   patch,
@@ -29,6 +30,18 @@ export class CategoriesPostsController {
    * @param categories categories id
    */
   }
+  @get('/api/categories/{id}/find')
+  async findPost(@param.path.string('id') categoriesId: string) {
+    const posts = await this.PostcategoriesRepository.posts(categoriesId);
+    if (post == null) {
+      throw new HttpErrors.NotFound(
+        ` Posts not found for categories: ${categoriesId}`,
+      );
+    } else {
+      return post
+    }
+  }
+
 
   @get('/api/categories/{id}/posts')
   async findPosts(
