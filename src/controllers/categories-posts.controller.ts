@@ -1,11 +1,12 @@
-import { PostcategoriesRepository, PostsRepository } from '../repositories/';
-import { posts } from '../models/';
+import { PostcategoriesRepository, PostsRepository } from '../repositories';
+import { posts } from '../models';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
   Where,
+  AnyType,
 } from '@loopback/repository';
 import {
   post,
@@ -18,7 +19,6 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import { promises } from 'fs';
 
 export class CategoriesPostsController {
   constructor(
@@ -30,28 +30,31 @@ export class CategoriesPostsController {
    * @param categories categories id
    */
   }
-  @get('/api/categories/{id}/find')
-  async findPost(@param.path.string('id') categoriesId: string) {
-    const posts = await this.PostcategoriesRepository.posts(categoriesId);
-    if (post == null) {
-      throw new HttpErrors.NotFound(
-        ` Posts not found for categories: ${categoriesId}`,
-      );
-    } else {
-      return post
-    }
-  }
 
 
-  @get('/api/categories/{id}/posts')
+
+  @get('/api/categories/{id}/posts', {
+    responses: {
+      '200': {
+        description: 'Array of Posts model',
+        content: {
+          'application/json': {
+            schema: { type: 'array', items: { 'x-ts-type': posts } },
+          },
+        },
+      },
+    },
+  })
   async findPosts(
     @param.path.string('id') categories: string,
     @param.query.string('filter') filter?: Filter,
+
   ): Promise<posts[]> {
-    const posts = await this.PostcategoriesRepository
+    let posts = await this.PostcategoriesRepository
       .posts(categories)
-      .find(filter, { strictObjectIDCoercion: true })
-    console.log(categories)
+      .find(filter)
+    var contain = await this.PostcategoriesRepository
+      .findById(categories)
     return posts
   }
 

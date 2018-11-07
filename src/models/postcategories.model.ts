@@ -28,11 +28,7 @@ export class postcategories extends Entity {
   _v: number;
 
 
-  /**
-   * Items in the categoires
-   */
-  @property.array(posts)
-  postsitem?: posts[];
+
 
 
   @hasMany(() => posts, { keyTo: 'categories' })

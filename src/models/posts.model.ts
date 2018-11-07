@@ -26,7 +26,7 @@ export class posts extends Entity {
     type: 'array',
     itemType: 'string',
   })
-  categories?: object[];
+  categories: object[];
 
   @property({
     type: 'string',
